@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:quizz/question.dart';
 
 void main() {
   runApp(Quizz());
@@ -33,19 +34,17 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> ScoreKeeper = [];
-  List<String> questions=['Sharks are mammals.',
-  'Sea otters have a favorite rock they use to break open food.',
-  'The blue whale is the biggest animal to have ever lived.',
-  'The hummingbird egg is the world\'s smallest bird egg.',
-  'Pigs roll in the mud because they don\'t like being clean.'];
-  List<bool> answers=[
-    false,
-    true,
-    true,
-    true,
-    false,
-  ];
   int questionNumber=0;
+
+  List<Question> questionBank=[
+    Question(q: 'Sharks are mammals.', a: false),
+    Question(q: 'Sea otters have a favorite rock they use to break open food.', a: true),
+    Question(q: 'The blue whale is the biggest animal to have ever lived.', a: true),
+    Question(q: 'The hummingbird egg is the world\'s smallest bird egg.', a: true),
+    Question(q: 'Pigs roll in the mud because they don\'t like being clean.', a: false),
+  ];
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,7 +56,7 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: EdgeInsets.all(15),
             child: Center(
-              child: Text(questions[questionNumber],
+              child: Text(questionBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -76,7 +75,7 @@ class _QuizPageState extends State<QuizPage> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.zero))),
               onPressed: () {
-                bool correctAnswer=answers[questionNumber];
+                bool correctAnswer=questionBank[questionNumber].questionAnswer;
                 if(correctAnswer==true){
                   print('You are Right!');
                   }
@@ -107,7 +106,7 @@ class _QuizPageState extends State<QuizPage> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.zero))),
               onPressed: () {
-                bool correctAnswer=answers[questionNumber];
+                bool correctAnswer=questionBank[questionNumber].questionAnswer;
                 if(correctAnswer==false){
                   print('You are Right!');
                 }
