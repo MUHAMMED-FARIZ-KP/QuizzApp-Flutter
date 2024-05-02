@@ -33,6 +33,19 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> ScoreKeeper = [];
+  List<String> questions=['Sharks are mammals.',
+  'Sea otters have a favorite rock they use to break open food.',
+  'The blue whale is the biggest animal to have ever lived.',
+  'The hummingbird egg is the world\'s smallest bird egg.',
+  'Pigs roll in the mud because they don\'t like being clean.'];
+  List<bool> answers=[
+    false,
+    true,
+    true,
+    true,
+    false,
+  ];
+  int questionNumber=0;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,8 +57,7 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: EdgeInsets.all(15),
             child: Center(
-              child: Text(
-                'Sea otters have a favorite rock they use to break open food.',
+              child: Text(questions[questionNumber],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -64,15 +76,19 @@ class _QuizPageState extends State<QuizPage> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.zero))),
               onPressed: () {
-                setState(() {
-                  ScoreKeeper.add(
-                    Icon(
-                      Icons.done,
-                      color: Colors.green,
-                    ),
-                  );
+                bool correctAnswer=answers[questionNumber];
+                if(correctAnswer==true){
+                  print('You are Right!');
+                  }
+                else{
+                    print('You are Wrong!');
+                }
 
+                setState(() {
+                  questionNumber=questionNumber+1;
                 });
+
+
 
               },
               child: Text(
@@ -90,7 +106,19 @@ class _QuizPageState extends State<QuizPage> {
                   backgroundColor: Colors.red,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.zero))),
-              onPressed: () {},
+              onPressed: () {
+                bool correctAnswer=answers[questionNumber];
+                if(correctAnswer==false){
+                  print('You are Right!');
+                }
+                else{
+                  print('You are Wrong!');
+                }
+
+                setState(() {
+                  questionNumber=questionNumber+1;
+                })  ;
+              },
               child: Text(
                 'False',
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
