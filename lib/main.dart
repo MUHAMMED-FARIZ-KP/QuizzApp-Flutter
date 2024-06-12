@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:quizz/question.dart';
+import 'package:quizz/questionbank.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+QuizBank quizBank =QuizBank();
 void main() {
   runApp(Quizz());
 }
@@ -33,16 +36,37 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Widget> ScoreKeeper = [];
-  int questionNumber=0;
+  List<Icon> ScoreKeeper = [];
+  void checkAnswer(bool userSelectedAnswer){
+    bool correctAnswer=quizBank.getQustionAnswer();
+    setState(() {
+      if(quizBank.isFinished()==true){
+        Alert(
+          context: context,
+          title: 'Finished',
+          desc: "You are completed quiz successfully"
+        ).show();
+        quizBank.reset();
+        ScoreKeeper=[];
+      }else{
+        if(userSelectedAnswer==correctAnswer){
+          ScoreKeeper.add(Icon(Icons.done,color: Colors.green,));
+        }
+        else{
+          ScoreKeeper.add(Icon(Icons.close,color: Colors.red,));
+        }
 
-  List<Question> questionBank=[
-    Question(q: 'Sharks are mammals.', a: false),
-    Question(q: 'Sea otters have a favorite rock they use to break open food.', a: true),
-    Question(q: 'The blue whale is the biggest animal to have ever lived.', a: true),
-    Question(q: 'The hummingbird egg is the world\'s smallest bird egg.', a: true),
-    Question(q: 'Pigs roll in the mud because they don\'t like being clean.', a: false),
-  ];
+
+        quizBank.nextQuestion();
+
+      }
+
+    });
+
+  }
+
+
+
 
 
   @override
@@ -56,7 +80,7 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: EdgeInsets.all(15),
             child: Center(
-              child: Text(questionBank[questionNumber].questionText,
+              child: Text(quizBank.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -75,17 +99,8 @@ class _QuizPageState extends State<QuizPage> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.zero))),
               onPressed: () {
-                bool correctAnswer=questionBank[questionNumber].questionAnswer;
-                if(correctAnswer==true){
-                  print('You are Right!');
-                  }
-                else{
-                    print('You are Wrong!');
-                }
+                checkAnswer(true);
 
-                setState(() {
-                  questionNumber=questionNumber+1;
-                });
 
 
 
@@ -106,17 +121,9 @@ class _QuizPageState extends State<QuizPage> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.zero))),
               onPressed: () {
-                bool correctAnswer=questionBank[questionNumber].questionAnswer;
-                if(correctAnswer==false){
-                  print('You are Right!');
-                }
-                else{
-                  print('You are Wrong!');
-                }
-
-                setState(() {
-                  questionNumber=questionNumber+1;
-                })  ;
+                //quizBank.questionBank[questionNumber].questionAnswer=true;
+                bool correctAnswer=quizBank.getQustionAnswer();
+                checkAnswer(false);
               },
               child: Text(
                 'False',
